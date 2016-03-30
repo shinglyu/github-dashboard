@@ -7,7 +7,8 @@ var Repo =  React.createClass({
         h('a', {href: info.html_url}, 
           h('h3', null, info.name)
         ),
-        h('p', null, info.description)
+        h('p', null, info.description),
+        h('p', null, info.updated_at)
        )
     )
   }
@@ -28,16 +29,41 @@ var Dashboard =  React.createClass({
     return {repos: [{title:"Loading..."}]}
   },
   componentDidMount: function() {
-    username="shinglyu"
-    fetch('https://api.github.com/users/' + username + '/repos').then(
-      function(result){
-        result.json().then(function(resultjson){
+    var username = "shinglyu"
+    var repoParams = '?type=all&per_page=100&sort=updated&direction=desc'
+    /* Get user owned repos */
+    fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
+      .then(function(result){
+          return result.json();
+      })
+      .then(function(resultjson){
           this.setState({repos: resultjson});
+      }.bind(this))
 
-        }.bind(this))
-      }.bind(this)
-    )
-    //TODO: find org repos too
+    /* Get org repos in which the user is*/
+    fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
+    fetch('https://api.github.com/users/' + username + '/orgs')
+      .then(function(result){
+          return result.json();
+      })
+      .then(function(resultjson){
+        for (var idx in resultjson){
+          var org = resultjson[idx]
+          fetch(org.repos_url + repoParams)
+            .then(function(repos){
+              return repos.json();
+            })
+            .then(function(reposjson){
+              function compareByUpdatedTimeRev(x,y){
+                if (x.updated_at > y.updated_at){ return -1; }
+                else if (x.updated_at < y.updated_at){ return 1; }
+                else { return 0; }
+              }
+              var repos = this.state.repos.concat(reposjson).sort(compareByUpdatedTimeRev);
+              this.setState({repos: repos})
+            }.bind(this))
+        }
+      }.bind(this))
   },
   render: function(){
     return (
