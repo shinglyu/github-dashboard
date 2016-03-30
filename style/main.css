@@ -1,0 +1,7 @@
+body {
+  background-color:#EEE;
+}
+
+.repo-card > .mui-panel {
+  height: 18rem;
+}

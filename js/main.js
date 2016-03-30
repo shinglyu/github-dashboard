@@ -3,13 +3,15 @@ var Repo =  React.createClass({
   render: function(){
     var info = this.props.repoinfo;
     return (
-      h('div', null, 
-        h('a', {href: info.html_url}, 
-          h('h3', null, info.name)
-        ),
-        h('p', null, info.description),
-        h('p', null, info.updated_at)
-       )
+      h('div', {className:"mui-col-md-4 repo-card"}, 
+        h('div', {className:"mui-panel"}, 
+          h('a', {href: info.html_url}, 
+            h('h3', null, info.name)
+          ),
+          h('p', null, info.updated_at),
+          h('p', null, info.description)
+        )
+      )
     )
   }
 })
@@ -19,14 +21,14 @@ var RepoList =  React.createClass({
       return h(Repo, { key:idx, repoinfo: repoinfo} )
     })
     return (
-      h('div', null, lis)
+      h('div', {className:"mui-row"}, lis)
     )
   }
 })
 
 var Dashboard =  React.createClass({
   getInitialState: function() {
-    return {repos: [{title:"Loading..."}]}
+    return {repos: [{name:"Loading..."}]}
   },
   componentDidMount: function() {
     var username = "shinglyu"
@@ -67,8 +69,8 @@ var Dashboard =  React.createClass({
   },
   render: function(){
     return (
-      h('div', null, 
-        h('h1', null, 'My GitHub'),
+      h('div', {className:"mui-row"}, 
+        h('h1', {className:"mui-col-md-12"}, 'My GitHub'),
         h(RepoList, {repos:this.state.repos})
        )
     )
