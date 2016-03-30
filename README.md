@@ -1,4 +1,4 @@
 GitHub Dashboard
 ===================
 
-# ![Demo](shinglyu.github.io/github-dashboard)
+# ![Demo](https://shinglyu.github.io/github-dashboard)
