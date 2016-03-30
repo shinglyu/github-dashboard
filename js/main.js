@@ -37,7 +37,19 @@ var Dashboard =  React.createClass({
     return {repos: [{name:"Loading...", owner:{}}]}
   },
   componentDidMount: function() {
-    var username = "shinglyu"
+
+    var re = /\?user=([\w-]*)/g; 
+    var matches = re.exec(location.search);
+    var username = null;
+    if (matches !== null && matches.length == 2) {
+      username = matches[1];
+    }
+    else {
+      username = prompt("What's your GitHub username?")
+      window.location += ("?user=" + username);
+    }
+
+    /*var username = "shinglyu"*/
     var repoParams = '?type=all&per_page=100&sort=updated&direction=desc'
     /* Get user owned repos */
     fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
