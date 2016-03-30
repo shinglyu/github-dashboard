@@ -6,13 +6,16 @@ var Repo =  React.createClass({
   render: function(){
     var info = this.props.repoinfo;
     var org = undefined;
+    /*
     if (info.owner.type == "Organization"){
       org = h('a', {href:info.owner.html_url}, info.owner.login)
     }
+    */
+
 
     var description = info.description;
-    var maxLength = 40;
-    if (description.length > maxLength) {
+    var maxLength = 70;
+    if (description != null && description.length > maxLength) {
       description = description.slice(0, maxLength) + "......"
     }
 
@@ -22,7 +25,9 @@ var Repo =  React.createClass({
           h('a', {href: info.html_url}, 
             h('h3', null, info.name)
           ),
-          h('p', null, org),
+          h('p', null, 
+            h('a', {href:info.owner.html_url}, info.owner.login)
+          ),
           h('p', {className:"description"}, description),
           h('p', null, 
             h('a', {href: info.html_url + "/issues"}, "Issues"),
