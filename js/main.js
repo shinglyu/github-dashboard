@@ -1,5 +1,8 @@
 var h = React.createElement;
 var Repo =  React.createClass({
+  handleClick: function() {
+    window.location = this.props.repoinfo.html_url;
+  },
   render: function(){
     var info = this.props.repoinfo;
     var org = undefined;
@@ -9,7 +12,7 @@ var Repo =  React.createClass({
 
     return (
       h('div', {className:"mui-col-md-4 repo-card"}, 
-        h('div', {className:"mui-panel"}, 
+        h('div', {className:"mui-panel", onClick:this.handleClick}, 
           h('a', {href: info.html_url}, 
             h('h3', null, info.name)
           ),

@@ -5,8 +5,10 @@ body {
 .repo-card > .mui-panel {
   height: 18rem;
   overflow: hidden;
+  cursor: pointer;
 }
 
 div.repo-card .updated_time {
   color: lightgrey;
 }
+
