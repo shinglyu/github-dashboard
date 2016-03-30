@@ -2,14 +2,20 @@ var h = React.createElement;
 var Repo =  React.createClass({
   render: function(){
     var info = this.props.repoinfo;
+    var org = undefined;
+    if (info.owner.type == "Organization"){
+      org = h('a', {href:info.owner.html_url}, info.owner.login)
+    }
+
     return (
       h('div', {className:"mui-col-md-4 repo-card"}, 
         h('div', {className:"mui-panel"}, 
           h('a', {href: info.html_url}, 
             h('h3', null, info.name)
           ),
-          h('p', null, info.updated_at),
-          h('p', null, info.description)
+          h('p', null, org),
+          h('p', null, info.description),
+          h('p', {className:"updated_time"}, info.updated_at)
         )
       )
     )
@@ -28,7 +34,7 @@ var RepoList =  React.createClass({
 
 var Dashboard =  React.createClass({
   getInitialState: function() {
-    return {repos: [{name:"Loading..."}]}
+    return {repos: [{name:"Loading...", owner:{}}]}
   },
   componentDidMount: function() {
     var username = "shinglyu"

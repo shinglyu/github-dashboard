@@ -4,4 +4,9 @@ body {
 
 .repo-card > .mui-panel {
   height: 18rem;
+  overflow: hidden;
+}
+
+div.repo-card .updated_time {
+  color: lightgrey;
 }
