@@ -8,7 +8,11 @@ body {
   cursor: pointer;
 }
 
-div.repo-card .updated_time {
+div.repo-card .pushed_time {
   color: lightgrey;
 }
 
+div.repo-card .description {
+  height: 2rem;
+  overflow: hidden;
+}

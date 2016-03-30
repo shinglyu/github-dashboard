@@ -10,6 +10,12 @@ var Repo =  React.createClass({
       org = h('a', {href:info.owner.html_url}, info.owner.login)
     }
 
+    var description = info.description;
+    var maxLength = 40;
+    if (description.length > maxLength) {
+      description = description.slice(0, maxLength) + "......"
+    }
+
     return (
       h('div', {className:"mui-col-md-4 repo-card"}, 
         h('div', {className:"mui-panel", onClick:this.handleClick}, 
@@ -17,8 +23,14 @@ var Repo =  React.createClass({
             h('h3', null, info.name)
           ),
           h('p', null, org),
-          h('p', null, info.description),
-          h('p', {className:"updated_time"}, info.updated_at)
+          h('p', {className:"description"}, description),
+          h('p', null, 
+            h('a', {href: info.html_url + "/issues"}, "Issues"),
+            h('span', null,  " | "),
+            h('a', {href: info.html_url + "/pulls"}, "PRs"),
+            h('span', null,  " | "),
+            h('span', {className:"pushed_time"}, info.pushed_at)
+          )
         )
       )
     )
@@ -37,7 +49,7 @@ var RepoList =  React.createClass({
 
 var Dashboard =  React.createClass({
   getInitialState: function() {
-    return {repos: [{name:"Loading...", owner:{}}]}
+    return {repos: [{name:"Loading...", owner:{}, description:''}]}
   },
   componentDidMount: function() {
 
@@ -53,7 +65,7 @@ var Dashboard =  React.createClass({
     }
 
     /*var username = "shinglyu"*/
-    var repoParams = '?type=all&per_page=100&sort=updated&direction=desc'
+    var repoParams = '?type=all&per_page=100&sort=pushed&direction=desc'
     /* Get user owned repos */
     fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
       .then(function(result){
@@ -77,12 +89,12 @@ var Dashboard =  React.createClass({
               return repos.json();
             })
             .then(function(reposjson){
-              function compareByUpdatedTimeRev(x,y){
-                if (x.updated_at > y.updated_at){ return -1; }
-                else if (x.updated_at < y.updated_at){ return 1; }
+              function compareByPushedTimeRev(x,y){
+                if (x.pushed_at > y.pushed_at){ return -1; }
+                else if (x.pushed_at < y.pushed_at){ return 1; }
                 else { return 0; }
               }
-              var repos = this.state.repos.concat(reposjson).sort(compareByUpdatedTimeRev);
+              var repos = this.state.repos.concat(reposjson).sort(compareByPushedTimeRev);
               this.setState({repos: repos})
             }.bind(this))
         }
