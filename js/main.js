@@ -72,27 +72,37 @@ var Dashboard =  React.createClass({
     /*var username = "shinglyu"*/
     var repoParams = '?type=all&per_page=100&sort=pushed&direction=desc'
     /* Get user owned repos */
+    /*
     fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
       .then(function(result){
           return result.json();
       })
+    */
+
+    var expireTime = 12 * 60 * 60 * 1000; // 12 hour
+    cachedFetch('https://api.github.com/users/' + username + '/repos' + repoParams, expireTime)
       .then(function(resultjson){
           this.setState({repos: resultjson});
       }.bind(this))
 
     /* Get org repos in which the user is*/
-    fetch('https://api.github.com/users/' + username + '/repos' + repoParams)
+    /*
     fetch('https://api.github.com/users/' + username + '/orgs')
       .then(function(result){
           return result.json();
       })
+    */
+    cachedFetch('https://api.github.com/users/' + username + '/orgs', expireTime)
       .then(function(resultjson){
         for (var idx in resultjson){
           var org = resultjson[idx]
+          /*
           fetch(org.repos_url + repoParams)
             .then(function(repos){
               return repos.json();
             })
+          */
+          cachedFetch(org.repos_url + repoParams, expireTime)
             .then(function(reposjson){
               function compareByPushedTimeRev(x,y){
                 if (x.pushed_at > y.pushed_at){ return -1; }
