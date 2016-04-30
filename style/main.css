@@ -16,3 +16,10 @@ div.repo-card .description {
   height: 4rem;
   overflow: hidden;
 }
+
+.repo-card.selected-card {
+  border-style: solid;
+  border-color: rgb(10, 10, 160);
+  border-width: 1px;
+  box-shadow: 0px 0px 15px rgb(10, 10, 160);
+}
