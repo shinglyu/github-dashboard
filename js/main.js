@@ -3,6 +3,16 @@ var Repo =  React.createClass({
   handleClick: function() {
     window.location = this.props.repoinfo.html_url;
   },
+  componentDidUpdate: function(){
+    if (this.props.selected){
+      let n = ReactDOM.findDOMNode(this)
+        if (n.scrollIntoViewIfNeeded){ // experimental
+          n.scrollIntoViewIfNeeded()
+        } else if (n.scrollIntoView){
+          n.scrollIntoView(true)
+        }
+    }
+  },
   render: function(){
     var info = this.props.repoinfo;
     var org = undefined;
